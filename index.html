@@ -4,12 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>DjPix</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-  <title>DjPix</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style type="text/tailwindcss">
+    [x-cloak] {
+      display: none !important;
+    }
+
     :root {
       --primary: rgb(88, 40, 244);
       --primary-hover: rgb(69, 29, 200);
@@ -107,12 +112,21 @@
       <ul class="flex items-center navitems">
         <li><a href="">Home</a></li>
         <li><a href="">Create Post</a></li>
-        <li>
-          <a href="">
+        <li x-data="{ dropdownOpen : false }" class="relative">
+          <a @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false" class="cursor-pointer select-none">
             <img class="h-8 rounded-full object-cover bg-teal-200" src="https://img.icons8.com/small/64/user.png" alt="user" />
             Chandler
-            <img class="w-4 mt-1" src="https://img.icons8.com/small/64/777777/expand-arrow.png" alt="expand-arrow" />
+            <img x-bind:class="dropdownOpen ? 'rotate-180 duration-300' : '' " class="w-4 mt-1"
+              src="https://img.icons8.com/small/64/777777/expand-arrow.png" alt="expand-arrow" />
           </a>
+          <div x-show="dropdownOpen" x-cloak class="absolute right-0 rounded-lg w-40 p-2 z-20 bg-white text-black shadow"
+            x-transition:enter="duration-300 ease-out" x-transition:enter-start="opacity-0 -translate-y-5 scale-90"
+            x-transition:enter-end="opacity-100 translate-y-0 scale-100">
+            <ul class=" hoverlist [&>li>a]:justify-end">
+              <li><a href="">My Profile</a></li>
+              <li><a href="">Log Out</a></li>
+            </ul>
+          </div>
         </li>
       </ul>
     </nav>
@@ -198,8 +212,8 @@
               <img class="w-10 h-10 rounded-lg object-cover mr-3" src="https://live.staticflickr.com/65535/50618365686_36f887ab88_c.jpg"
                 alt="">
               <img class="w-6 h-6 rounded-full object-cover mr-0.5" src="https://img.icons8.com/small/96/A9A9A9/happy.png" alt="">
-              <span class="font-bold text-sm mr-1">Joey</span>
-              <span class="text-sm font-light text-grey-500">(5 Likes)</span>
+              <span class="font-bold text-sm mr-1">Phoebe</span>
+              <span class="text-sm font-light text-grey-500">(15 Likes)</span>
             </a>
           </li>
           <li>
