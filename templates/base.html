@@ -236,6 +236,12 @@
         #profile article p {
             @apply truncate leading-normal;
         }
+        form[action="/accounts/signup/"] ul {
+            @apply hidden
+        }
+        form[action="/accounts/signup/"] ul.errorlist {
+            @apply block
+        }
     </style>
 </head>
 
