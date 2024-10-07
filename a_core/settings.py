@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'django_cleanup.apps.CleanupConfig',
     'a_posts',
+    'a_users',
 ]
 
 SITE_ID = 1
