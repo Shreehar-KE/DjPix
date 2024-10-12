@@ -14,9 +14,10 @@ def create_profile(sender, instance, created, **kwargs):
             email=user.email
         )
     else:
-        profile = get_object_or_404(Profile, user=user)
-        profile.email = user.email
-        profile.save()
+        if not instance.is_superuser:
+            profile = get_object_or_404(Profile, user=user)
+            profile.email = user.email
+            profile.save()
 
 
 @receiver(post_save, sender=Profile)

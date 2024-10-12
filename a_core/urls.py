@@ -35,6 +35,8 @@ urlpatterns = [
     path('profile/edit/', profile_edit_view, name='profile-edit'),
     path('profile/onboarding/', profile_edit_view, name='profile-onboarding'),
     path('profile/delete/', profile_delete_view, name='profile-delete'),
+    path('commentsent/<pk>/',comment_sent, name='comment-sent'),
+    path('comment/delete/<pk>/', comment_delete_view, name='comment-delete'),
 
 ]
 

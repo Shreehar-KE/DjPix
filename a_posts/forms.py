@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Post
+from .models import *
 
 
 class PostCreateForm(ModelForm):
@@ -29,4 +29,16 @@ class PostEditForm(ModelForm):
         widgets = {
             'body': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Add a caption...',  'class': 'font1 text-4xl'}),
             'tags': forms.CheckboxSelectMultiple(),
+        }
+
+
+class CommentCreateForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['body']
+        widgets = {
+            'body': forms.TextInput(attrs={'placeholder': 'Add comment...'})
+        }
+        labels = {
+            'body': ''
         }
