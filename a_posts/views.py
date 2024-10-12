@@ -94,9 +94,11 @@ def post_page_view(request, pk):
     post = get_object_or_404(Post, id=pk)
 
     commentform = CommentCreateForm()
+    replyform = ReplyCreateForm()
     context = {
         'post': post,
         'commentform': commentform,
+        'replyform': replyform,
     }
 
     return render(request, 'a_posts/post_page.html', context)
@@ -106,15 +108,30 @@ def post_page_view(request, pk):
 def comment_sent(request, pk):
     post = get_object_or_404(Post, id=pk)
 
-    if request.method =='POST':
+    if request.method == 'POST':
         form = CommentCreateForm(request.POST)
         if form.is_valid:
             comment = form.save(commit=False)
             comment.author = request.user
             comment.parent_post = post
             comment.save()
-    
-    return redirect('post',post.id)
+
+    return redirect('post', post.id)
+
+
+@login_required
+def reply_sent(request, pk):
+    comment = get_object_or_404(Comment, id=pk)
+
+    if request.method == 'POST':
+        form = ReplyCreateForm(request.POST)
+        if form.is_valid:
+            reply = form.save(commit=False)
+            reply.author = request.user
+            reply.parent_comment = comment
+            reply.save()
+
+    return redirect('post', comment.parent_post.id)
 
 
 @login_required
@@ -127,3 +144,15 @@ def comment_delete_view(request, pk):
         return redirect('post', comment.parent_post.id)
 
     return render(request, 'a_posts/comment_delete.html', {'comment': comment})
+
+
+@login_required
+def reply_delete_view(request, pk):
+    reply = get_object_or_404(Reply, id=pk, author=request.user)
+
+    if request.method == 'POST':
+        reply.delete()
+        messages.success(request, 'Reply deleted')
+        return redirect('post', reply.parent_comment.parent_post.id)
+
+    return render(request, 'a_posts/reply_delete.html', {'reply': reply})

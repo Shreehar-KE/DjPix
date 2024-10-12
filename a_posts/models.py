@@ -54,3 +54,24 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-created']
+
+
+class Reply(models.Model):
+    author = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name='replies')
+    parent_comment = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, related_name='replies')
+    body = models.CharField(max_length=150)
+    created = models.DateTimeField(auto_now_add=True)
+    id = models.CharField(max_length=100, default=uuid.uuid4,
+                          unique=True, primary_key=True, editable=False)
+
+    def __str__(self):
+        try:
+            return f'{self.author.username} : {self.body[:30]}'
+        except:
+            return f'No Author : {self.body[:30]}'
+
+    class Meta:
+        ordering = ['created']
+        verbose_name_plural = 'replies'

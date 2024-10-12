@@ -42,3 +42,15 @@ class CommentCreateForm(ModelForm):
         labels = {
             'body': ''
         }
+
+
+class ReplyCreateForm(ModelForm):
+    class Meta:
+        model = Reply
+        fields = ['body']
+        widgets = {
+            'body': forms.TextInput(attrs={'placeholder': 'Add reply...', 'class': '!text-sm'})
+        }
+        labels = {
+            'body': ''
+        }
