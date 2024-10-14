@@ -156,3 +156,17 @@ def reply_delete_view(request, pk):
         return redirect('post', reply.parent_comment.parent_post.id)
 
     return render(request, 'a_posts/reply_delete.html', {'reply': reply})
+
+
+@login_required
+def like_post(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    user_exists = post.likes.filter(username=request.user.username).exists()
+
+    if post.author != request.user:
+        if user_exists:
+            post.likes.remove(request.user)
+        else:
+            post.likes.add(request.user)
+
+    return render(request, 'snippets/likes.html', {'post': post})
